@@ -24,7 +24,7 @@ this repository contains the full copyright notices and license terms. -->
             <field name="name">create_pending_moves</field>
             <field name="string">Create Pending Moves</field>
             <field name="model" search="[('model', '=', 'sale.sale')]"/>
-            <field name="confirm">Are you sure you want to create_pending_moves from sales?</field>
+            <field name="confirm">Are you sure you want to create pending moves from sales?</field>
         </record>
         <record model="ir.model.button-res.group" id="sale_create_pending_moves_button_group_sale">
             <field name="button" ref="sale_create_pending_moves_button"/>

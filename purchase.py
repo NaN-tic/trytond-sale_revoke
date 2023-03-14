@@ -13,8 +13,8 @@ from trytond.wizard import StateAction, Wizard
 class Purchase(metaclass=PoolMeta):
     __name__ = 'purchase.purchase'
 
-    recreate_moves = fields.Function(fields.One2Many('stock.move', None,
-        'Recreate Moves'), 'get_recreate_moves')
+    ignored_moves = fields.Function(fields.One2Many('stock.move', None,
+        'Ignored Moves'), 'get_ignored_moves')
 
     @classmethod
     def __setup__(cls):
@@ -30,23 +30,18 @@ class Purchase(metaclass=PoolMeta):
                     },
                 'create_pending_moves': {
                     'invisible': (~Eval('state').in_(['processing', 'done'])
-                        | ~Bool(Eval('recreate_moves', []))),
-                    'depends': ['state', 'recreate_moves'],
+                        | ~Bool(Eval('ignored_moves', []))),
+                    'depends': ['state', 'ignored_moves'],
                     },
                 })
 
     @classmethod
-    def get_recreate_moves(cls, purchases, name):
+    def get_ignored_moves(cls, purchases, name):
         res = dict((x.id, None) for x in purchases)
         for purchase in purchases:
             moves = []
             for line in purchase.lines:
-                skips = set(line.moves_ignored)
-                # skips.update(line.moves_recreated)
-                for move in line.moves:
-                    if move.state == 'cancelled' and move in skips:
-                        moves.append(move.id)
-                        break
+                moves += [m.id for m in line.moves_ignored]
             res[purchase.id] = moves
         return res
 
@@ -74,8 +69,8 @@ class Purchase(metaclass=PoolMeta):
 
         for purchase in purchases:
             moves = _check_moves(purchase)
-            picks = [shipment for shipment in [
-                list(purchase.shipments) + list(purchase.shipment_returns)]
+            picks = [shipment for shipment in
+                list(purchase.shipments) + list(purchase.shipment_returns)
                 if shipment.state in ['assigned', 'received', 'assigned']]
             if moves or picks:
                 names = ', '.join(m.rec_name for m in (moves + picks)[:5])
@@ -96,12 +91,12 @@ class Purchase(metaclass=PoolMeta):
             if moves:
                 Move.cancel(moves)
 
-            pending_moves = []
+            moves = [move for line in purchase.lines for move in line.moves
+                if move.state == 'cancelled']
+            skip = set()
             for line in purchase.lines:
-                skip = set(line.moves_ignored + line.moves_recreated)
-                for move in line.moves:
-                    if move not in skip:
-                        pending_moves.append(move.id)
+                skip |= set(line.moves_ignored + line.moves_recreated)
+            pending_moves = [x for x in moves if not x in skip]
 
             with Transaction().set_context({'active_id': purchase.id}):
                 session_id, _, _ = HandleShipmentException.create()
@@ -132,12 +127,12 @@ class PurchaseCreatePendingMoves(Wizard):
 
         new_purchases = []
         for purchase in self.records:
-            recreate_moves = purchase.recreate_moves
-            if not recreate_moves:
+            ignored_moves = purchase.ignored_moves
+            if not ignored_moves:
                 continue
 
-            products = dict((move.product, 0) for move in recreate_moves)
-            for move in recreate_moves:
+            products = dict((move.product, 0) for move in ignored_moves)
+            for move in ignored_moves:
                 from_uom = move.uom
                 to_uom = move.product.purchase_uom
                 if from_uom != to_uom:

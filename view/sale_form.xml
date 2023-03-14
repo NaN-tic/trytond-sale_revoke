@@ -7,6 +7,6 @@
         <button name="create_pending_moves" icon="tryton-launch"/>
     </xpath>
     <xpath expr="/form/field[@name='party_lang']" position="after">
-        <field name="recreate_moves" invisible="1" colspan="6"/>
+        <field name="ignored_moves" invisible="1" colspan="6"/>
     </xpath>
 </data>
