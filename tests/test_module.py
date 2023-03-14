@@ -7,5 +7,6 @@ from trytond.tests.test_tryton import ModuleTestCase
 class SalePurchaseRevokeTestCase(ModuleTestCase):
     'Test Sale Purchase Revoke module'
     module = 'sale_purchase_revoke'
+    extras = ['sale', 'purchase']
 
 del ModuleTestCase
