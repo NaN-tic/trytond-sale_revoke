@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# This file is part sale_purchase_revoke module for Tryton.
+# This file is part sale_revoke module for Tryton.
 # The COPYRIGHT file at the top level of this repository contains
 # the full copyright notices and license terms.
 # encoding: utf-8
@@ -10,7 +10,7 @@ import os
 import io
 from configparser import ConfigParser
 
-MODULE = 'sale_purchase_revoke'
+MODULE = 'sale_revoke'
 PREFIX = 'nantic'
 MODULE2PREFIX = {}
 OWNER = {
@@ -96,8 +96,8 @@ setup(name='%s_%s' % (PREFIX, MODULE),
     long_description=read('README'),
     author='NaN-tic',
     author_email='info@nan-tic.com',
-    url='https://github.com/NaN-tic/trytond-sale_purchase_revoke',
-    download_url='https://github.com:nantic/trytond-sale_purchase_revoke.git',
+    url='https://github.com/NaN-tic/trytond-sale_revoke',
+    download_url='https://github.com:nantic/trytond-sale_revoke.git',
     package_dir={'trytond.modules.%s' % MODULE: '.'},
     packages=[
         'trytond.modules.%s' % MODULE,
@@ -109,7 +109,7 @@ setup(name='%s_%s' % (PREFIX, MODULE),
             'icons/*.svg']),
         },
     project_urls = {
-       "Source Code": 'https://github.com:NaN-tic/trytond-sale_purchase_revoke.git'
+       "Source Code": 'https://github.com:NaN-tic/trytond-sale_revoke.git'
     },
     classifiers=[
         'Development Status :: 5 - Production/Stable',

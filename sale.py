@@ -75,7 +75,7 @@ class Sale(metaclass=PoolMeta):
                 names = ', '.join(m.rec_name for m in (moves + picks)[:5])
                 if len(names) > 5:
                     names += '...'
-                raise UserError(gettext('sale_purchase_revoke.msg_can_not_revoke',
+                raise UserError(gettext('sale_revoke.msg_can_not_revoke',
                     record=sale.rec_name,
                     names=names))
 
@@ -104,7 +104,7 @@ class Sale(metaclass=PoolMeta):
                 HandleShipmentException.delete(session_id)
 
     @classmethod
-    @ModelView.button_action('sale_purchase_revoke.act_sale_create_pending_moves_wizard')
+    @ModelView.button_action('sale_revoke.act_sale_create_pending_moves_wizard')
     def create_pending_moves(cls, sales):
         pass
 

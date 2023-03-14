@@ -1,7 +1,7 @@
-sale_purchase_revoke
+sale_revoke
 ====================
 
-The sale_purchase_revoke module of the Tryton application platform.
+The sale_revoke module of the Tryton application platform.
 
 Installing
 ----------
