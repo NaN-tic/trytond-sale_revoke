@@ -183,8 +183,6 @@ Revoke sale and create pending moves::
 
 Sale and partial shipment::
 
-    >>> Sale = Model.get('sale.sale')
-    >>> SaleLine = Model.get('sale.line')
     >>> sale = Sale()
     >>> sale.party = customer
     >>> sale.payment_term = payment_term
@@ -244,8 +242,6 @@ Ship 3 products::
 
 Sale and raise UserError::
 
-    >>> Sale = Model.get('sale.sale')
-    >>> SaleLine = Model.get('sale.line')
     >>> sale = Sale()
     >>> sale.party = customer
     >>> sale.payment_term = payment_term
