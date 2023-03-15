@@ -126,7 +126,10 @@ class SaleCreatePendingMoves(Wizard):
             if not ignored_moves:
                 continue
 
-            products = dict((move.product, 0) for move in ignored_moves)
+            products = dict((move.product.id, 0) for move in ignored_moves)
+            sale_units = dict((move.product.id, move.product.sale_uom)
+                for move in ignored_moves)
+
             for move in ignored_moves:
                 from_uom = move.uom
                 to_uom = move.product.sale_uom
@@ -135,21 +138,30 @@ class SaleCreatePendingMoves(Wizard):
                         to_uom, round=False)
                 else:
                     qty = move.quantity
-                products[move.product] += qty
+                products[move.product.id] += qty
 
             new_sale, = Sale.copy([sale], {'lines': []})
 
-            for line in sale.lines:
-                if line.type != 'line' or not line.product:
-                    continue
-                product = line.product
-                if products.get(product):
-                    qty = products[product]
-                    Line.copy([line], {
-                        'sale': new_sale,
-                        'quantity': qty,
-                        'uom': product.sale_uom,
-                        })
+            def default_quantity(data):
+                product_id = data.get('product')
+                quantity = data.get('quantity')
+                if product_id:
+                    return products[product_id]
+                return quantity
+
+            def default_sale_unit(data):
+                product_id = data.get('product')
+                unit_id = data.get('unit')
+                if product_id:
+                    return sale_units[product_id]
+                return unit_id
+
+            Line.copy(sale.lines, default={
+                'sale': new_sale,
+                'quantity': default_quantity,
+                'unit': default_sale_unit,
+                })
+
             new_sales.append(new_sale)
 
         data = {'res_id': [s.id for s in new_sales]}
