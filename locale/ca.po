@@ -12,7 +12,7 @@ msgstr "Crea moviments pendents"
 
 msgctxt "model:ir.message,text:msg_can_not_revoke"
 msgid ""
-"You cannot revoke \"%(record)s\" because you there are moves that are not in cancel, draft or done state:\n"
+"You cannot revoke \"%(record)s\" because there are moves that are not in Cancel, Draft or Done state:\n"
 "\"%(names)s\"."
 msgstr ""
 "No pot anul·lar \"%(record)s\" perquè hi han moviments que no estan a l'estat cancel·lat, esborrany o finalitzat:\n"
