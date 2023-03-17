@@ -12,15 +12,11 @@ msgstr "Crea moviments pendents"
 
 msgctxt "model:ir.message,text:msg_can_not_revoke"
 msgid ""
-"You cannot revoke \"%(record)s\" because must first cancel, draft or done the moves or shipments:\n"
+"You cannot revoke \"%(record)s\" because you there are moves that are not in cancel, draft or done state:\n"
 "\"%(names)s\"."
 msgstr ""
-"No pot anul·lar \"%(record)s\" perquè primer cal que els albarans o moviments, a l'estat cancel·lat, esborrany o finalitzat:\n"
+"No pot anul·lar \"%(record)s\" perquè hi han moviments que no estan a l'estat cancel·lat, esborrany o finalitzat:\n"
 "\"%(names)s\"."
-
-msgctxt "model:ir.model.button,confirm:sale_create_pending_moves_button"
-msgid "Are you sure you want to create pending moves from sales?"
-msgstr "Esteu segurs de crear els moviments pendents de les vendes?"
 
 msgctxt "model:ir.model.button,confirm:sale_revoke_button"
 msgid "Are you sure you want to revoke sales?"
