@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!-- The COPYRIGHT file at the top level of this repository contains the full
+     copyright notices and license terms. -->
+<data>
+    <xpath expr="/form/group[@id='buttons']" position="inside">
+        <button name="revoke"/>
+        <button name="create_pending_moves" icon="tryton-launch"/>
+    </xpath>
+    <xpath expr="/form/field[@name='party_lang']" position="after">
+        <field name="ignored_moves" invisible="1" colspan="6"/>
+    </xpath>
+</data>

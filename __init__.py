@@ -1,12 +1,13 @@
-# This file is part sale_purchase_revoke module for Tryton.
+# This file is part sale_revoke module for Tryton.
 # The COPYRIGHT file at the top level of this repository contains
 # the full copyright notices and license terms.
 from trytond.pool import Pool
+from . import sale
 
 def register():
     Pool.register(
-        module='sale_purchase_revoke', type_='model')
+        sale.Sale,
+        module='sale_revoke', type_='model')
     Pool.register(
-        module='sale_purchase_revoke', type_='wizard')
-    Pool.register(
-        module='sale_purchase_revoke', type_='report')
+        sale.SaleCreatePendingMoves,
+        module='sale_revoke', type_='wizard')

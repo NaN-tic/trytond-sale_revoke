@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!-- This file is part of Tryton.  The COPYRIGHT file at the top level of
+this repository contains the full copyright notices and license terms. -->
+<tryton>
+    <data depends="sale">
+        <record model="ir.ui.view" id="sale_view_form">
+            <field name="model">sale.sale</field>
+            <field name="inherit" ref="sale.sale_view_form"/>
+            <field name="name">sale_form</field>
+        </record>
+
+        <record model="ir.model.button" id="sale_revoke_button">
+            <field name="name">revoke</field>
+            <field name="string">Revoke</field>
+            <field name="model" search="[('model', '=', 'sale.sale')]"/>
+            <field name="confirm">Are you sure you want to revoke sales?</field>
+        </record>
+        <record model="ir.model.button-res.group" id="sale_revoke_button_group_sale">
+            <field name="button" ref="sale_revoke_button"/>
+            <field name="group" ref="sale.group_sale"/>
+        </record>
+
+        <record model="ir.model.button" id="sale_create_pending_moves_button">
+            <field name="name">create_pending_moves</field>
+            <field name="string">Create Pending Moves</field>
+            <field name="model" search="[('model', '=', 'sale.sale')]"/>
+        </record>
+        <record model="ir.model.button-res.group" id="sale_create_pending_moves_button_group_sale">
+            <field name="button" ref="sale_create_pending_moves_button"/>
+            <field name="group" ref="sale.group_sale"/>
+        </record>
+
+        <record model="ir.action.wizard" id="act_sale_create_pending_moves_wizard">
+            <field name="name">Create Pending Moves</field>
+            <field name="wiz_name">sale.sale.create_pending_moves</field>
+            <field name="model">sale.sale</field>
+        </record>
+    </data>
+</tryton>

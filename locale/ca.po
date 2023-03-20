@@ -1,0 +1,31 @@
+#
+msgid ""
+msgstr "Content-Type: text/plain; charset=utf-8\n"
+
+msgctxt "field:sale.sale,ignored_moves:"
+msgid "Ignored Moves"
+msgstr "Moviments ignorats"
+
+msgctxt "model:ir.action,name:act_sale_create_pending_moves_wizard"
+msgid "Create Pending Moves"
+msgstr "Crea moviments pendents"
+
+msgctxt "model:ir.message,text:msg_can_not_revoke"
+msgid ""
+"You cannot revoke \"%(record)s\" because there are moves that are not in Cancel, Draft or Done state:\n"
+"\"%(names)s\"."
+msgstr ""
+"No pot anul·lar \"%(record)s\" perquè hi han moviments que no estan a l'estat cancel·lat, esborrany o finalitzat:\n"
+"\"%(names)s\"."
+
+msgctxt "model:ir.model.button,confirm:sale_revoke_button"
+msgid "Are you sure you want to revoke sales?"
+msgstr "Esteu segurs d'anul·lar les vendes?"
+
+msgctxt "model:ir.model.button,string:sale_create_pending_moves_button"
+msgid "Create Pending Moves"
+msgstr "Crea moviments pendents"
+
+msgctxt "model:ir.model.button,string:sale_revoke_button"
+msgid "Revoke"
+msgstr "Anul·lar"
