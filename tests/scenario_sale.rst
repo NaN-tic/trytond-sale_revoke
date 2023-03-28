@@ -211,7 +211,6 @@ Ship 3 products::
     10.0
     >>> stock_inventory_move.quantity = 3.0
     >>> shipment.click('assign_try')
-    True
     >>> shipment.click('pick')
     >>> shipment.click('pack')
     >>> shipment.click('done')
@@ -254,7 +253,6 @@ Sale and raise UserError::
     >>> sale.click('confirm')
     >>> shipment, = sale.shipments
     >>> shipment.click('assign_try')
-    True
     >>> sale.click('revoke')  # doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
         ...
