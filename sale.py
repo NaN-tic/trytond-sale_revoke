@@ -131,7 +131,7 @@ class SaleCreatePendingMoves(Wizard):
                 for move in ignored_moves)
 
             for move in ignored_moves:
-                from_uom = move.uom
+                from_uom = move.unit
                 to_uom = move.product.sale_uom
                 if from_uom != to_uom:
                     qty = Uom.compute_qty(from_uom, move.quantity,
