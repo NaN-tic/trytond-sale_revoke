@@ -93,11 +93,10 @@ class Sale(metaclass=PoolMeta):
                 skip |= set(line.moves_ignored + line.moves_recreated)
             pending_moves = [x for x in moves if not x in skip]
 
-            with Transaction().set_context({'active_id': sale.id}):
+            with Transaction().set_context(active_model=Sale.__name__,
+                    active_ids=[sale.id], active_id=sale.id):
                 session_id, _, _ = HandleShipmentException.create()
                 handle_shipment_exception = HandleShipmentException(session_id)
-                handle_shipment_exception.record = sale
-                handle_shipment_exception.model = cls
                 handle_shipment_exception.ask.recreate_moves = []
                 handle_shipment_exception.ask.domain_moves = pending_moves
                 handle_shipment_exception.transition_handle()

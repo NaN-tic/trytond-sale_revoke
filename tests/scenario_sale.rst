@@ -164,7 +164,7 @@ Sale 5 products with an invoice method 'on shipment'::
 Revoke sale and create pending moves::
 
     >>> sale.click('revoke')
-    >>> sale.shipment_state == 'sent'
+    >>> sale.shipment_state == 'none'
     True
     >>> shipment, = sale.shipments
     >>> shipment.state == 'cancelled'
