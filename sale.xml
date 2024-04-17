@@ -12,7 +12,7 @@ this repository contains the full copyright notices and license terms. -->
         <record model="ir.model.button" id="sale_revoke_button">
             <field name="name">revoke</field>
             <field name="string">Revoke</field>
-            <field name="model" search="[('model', '=', 'sale.sale')]"/>
+            <field name="model">sale.sale</field>
             <field name="confirm">Are you sure you want to revoke sales?</field>
         </record>
         <record model="ir.model.button-res.group" id="sale_revoke_button_group_sale">
@@ -23,7 +23,7 @@ this repository contains the full copyright notices and license terms. -->
         <record model="ir.model.button" id="sale_create_pending_moves_button">
             <field name="name">create_pending_moves</field>
             <field name="string">Create Pending Moves</field>
-            <field name="model" search="[('model', '=', 'sale.sale')]"/>
+            <field name="model">sale.sale</field>
         </record>
         <record model="ir.model.button-res.group" id="sale_create_pending_moves_button_group_sale">
             <field name="button" ref="sale_create_pending_moves_button"/>
