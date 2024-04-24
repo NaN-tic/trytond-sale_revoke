@@ -7,7 +7,9 @@ from . import sale
 def register():
     Pool.register(
         sale.Sale,
+        sale.SaleRevokeStart,
         module='sale_revoke', type_='model')
     Pool.register(
+        sale.SaleRevoke,
         sale.SaleCreatePendingMoves,
         module='sale_revoke', type_='wizard')
