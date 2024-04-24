@@ -7,8 +7,8 @@ from trytond.transaction import Transaction
 from trytond.exceptions import UserError
 from trytond.i18n import gettext
 from trytond.pyson import Bool, Eval
-from trytond.wizard import StateAction, Wizard
-
+from trytond.wizard import (
+    Button, StateAction, StateTransition, StateView, Wizard)
 
 class Sale(metaclass=PoolMeta):
     __name__ = 'sale.sale'
@@ -46,39 +46,58 @@ class Sale(metaclass=PoolMeta):
         return res
 
     @classmethod
-    @ModelView.button
-    @Workflow.transition('done')
+    @ModelView.button_action('sale_revoke.wizard_revoke')
     def revoke(cls, sales):
+        pass
+
+    @classmethod
+    def _check_moves(cls, sale):
+        moves = []
+        for key in [('shipments', 'inventory_moves'),
+                ('shipment_returns', 'incoming_moves')]:
+            shipments, shipment_moves = key[0], key[1]
+            for shipment in getattr(sale, shipments):
+                for move in getattr(shipment, shipment_moves):
+                    if move.state not in ('cancelled', 'draft', 'done'):
+                        moves.append(move)
+        return moves
+
+    @classmethod
+    def validate_moves(cls, sales):
+        for sale in sales:
+            moves = cls._check_moves(sale)
+            picks = [shipment for shipment in
+                list(sale.shipments) + list(sale.shipment_returns)
+                if shipment.state not in ('cancelled', 'waiting', 'draft', 'done')]
+            if moves or picks:
+                names = ', '.join(m.rec_name for m in (moves + picks)[:5])
+                if len(moves + picks) > 5:
+                    names += '...'
+                raise UserError(gettext('sale_revoke.msg_can_not_revoke_moves',
+                    record=sale.rec_name, names=names))
+
+    @classmethod
+    def validate_invoices(cls, sales):
+        for sale in sales:
+            invalid_invoices = [invoice for invoice in sale.invoices
+                if invoice.state not in ('cancelled', 'draft', 'posted', 'paid')]
+            if invalid_invoices:
+                names = ', '.join(i.rec_name for i in invalid_invoices[:5])
+                if len(invalid_invoices) > 5:
+                    names += '...'
+                raise UserError(gettext('sale_revoke.msg_can_not_revoke_invoices',
+                record=sale.rec_name, names=names))
+
+    @classmethod
+    def handle_shipments(cls, sales):
         pool = Pool()
         Shipment = pool.get('stock.shipment.out')
         ShipmentReturn = pool.get('stock.shipment.out.return')
         HandleShipmentException = pool.get(
             'sale.handle.shipment.exception', type='wizard')
 
-        def _check_moves(sale):
-            moves = []
-            for key in [('shipments', 'inventory_moves'),
-                    ('shipment_returns', 'incoming_moves')]:
-                shipments, shipment_moves = key[0], key[1]
-                for shipment in getattr(sale, shipments):
-                    for move in getattr(shipment, shipment_moves):
-                        if move.state not in ('cancelled', 'draft', 'done'):
-                            moves.append(move)
-            return moves
-
         for sale in sales:
-            moves = _check_moves(sale)
-            picks = [shipment for shipment in
-                list(sale.shipments) + list(sale.shipment_returns)
-                if shipment.state not in ('waiting', 'draft', 'done')]
-            if moves or picks:
-                names = ', '.join(m.rec_name for m in (moves + picks)[:5])
-                if len(names) > 5:
-                    names += '...'
-                raise UserError(gettext('sale_revoke.msg_can_not_revoke',
-                    record=sale.rec_name,
-                    names=names))
-
+            sale = cls(sale.id)
             Shipment.draft([shipment for shipment in sale.shipments
                 if shipment.state == 'waiting'])
             Shipment.cancel([shipment for shipment in sale.shipments
@@ -103,10 +122,65 @@ class Sale(metaclass=PoolMeta):
                 HandleShipmentException.delete(session_id)
 
     @classmethod
+    def handle_invoices(cls, sales):
+        pool = Pool()
+        Invoice = pool.get('account.invoice')
+        HandleInvoiceException = pool.get(
+            'sale.handle.invoice.exception', type='wizard')
+
+        for sale in sales:
+            sale = cls(sale.id)
+            Invoice.cancel([invoice for invoice in sale.invoices
+                if invoice.state == 'draft'])
+
+            cancel_invoices = [invoice for invoice in sale.invoices
+                if invoice.state == 'cancelled']
+            skip = set(sale.invoices_ignored + sale.invoices_recreated)
+            pending_invoices = [i for i in cancel_invoices if not i in skip]
+
+            with Transaction().set_context({'active_id': sale.id}):
+                session_id, _, _ = HandleInvoiceException.create()
+                handle_invoice_exception = HandleInvoiceException(session_id)
+                handle_invoice_exception.record = sale
+                handle_invoice_exception.model = cls
+                handle_invoice_exception.ask.recreate_invoices = []
+                handle_invoice_exception.ask.domain_invoices = pending_invoices
+                handle_invoice_exception.transition_handle()
+                HandleInvoiceException.delete(session_id)
+
+    @classmethod
     @ModelView.button_action('sale_revoke.act_sale_create_pending_moves_wizard')
     def create_pending_moves(cls, sales):
         pass
 
+class SaleRevokeStart(ModelView):
+    'Revoke Start'
+    __name__ = 'sale.sale.revoke.start'
+
+    manage_invoices = fields.Boolean('Also Manage Invoices?')
+
+class SaleRevoke(Wizard):
+    'Revoke Sales'
+    __name__ = 'sale.sale.revoke'
+
+    start = StateView('sale.sale.revoke.start',
+        'sale_revoke.sale_revoke_start_view_form', [
+            Button('Cancel', 'end', 'tryton-cancel'),
+            Button('Revoke', 'revoke', 'tryton-ok', default=True),
+            ])
+
+    revoke = StateTransition()
+
+    def transition_revoke(self):
+        Sale = Pool().get('sale.sale')
+
+        Sale.validate_moves(self.records)
+        if self.start.manage_invoices:
+            Sale.validate_invoices(self.records)
+            Sale.handle_invoices(self.records)
+        Sale.handle_shipments(self.records)
+
+        return 'end'
 
 class SaleCreatePendingMoves(Wizard):
     "Sale Create Pending Moves"
