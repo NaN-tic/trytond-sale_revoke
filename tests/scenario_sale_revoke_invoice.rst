@@ -1,6 +1,6 @@
-=============
-Sale Scenario
-=============
+============================
+Sale Revoke Invoice Scenario
+============================
 
 Imports::
 
@@ -125,121 +125,45 @@ Create an Inventory::
     >>> inventory.state
     'done'
 
-Sale 5 products with an invoice method 'on shipment'::
+Sale 5 products with shipment method 'on invoice'::
 
     >>> Sale = Model.get('sale.sale')
+    >>> sale = Sale()
     >>> SaleLine = Model.get('sale.line')
-    >>> sale = Sale()
     >>> sale.party = customer
     >>> sale.payment_term = payment_term
-    >>> sale.invoice_method = 'shipment'
-    >>> sale_line = SaleLine()
-    >>> sale.lines.append(sale_line)
+    >>> sale.shipment_method = 'invoice'
+    >>> sale_line = sale.lines.new()
     >>> sale_line.product = product
-    >>> sale_line.quantity = 2.0
-    >>> sale_line = SaleLine()
-    >>> sale.lines.append(sale_line)
-    >>> sale_line.type = 'comment'
-    >>> sale_line.description = 'Comment'
-    >>> sale_line = SaleLine()
-    >>> sale.lines.append(sale_line)
-    >>> sale_line.product = product
-    >>> sale_line.quantity = 3.0
-    >>> sale_line = SaleLine()
-    >>> sale.lines.append(sale_line)
-    >>> sale_line.product = product
-    >>> sale_line.quantity = -3.0
+    >>> sale_line.quantity = 5.0
     >>> sale.click('quote')
     >>> sale.click('confirm')
     >>> sale.state
     'processing'
     >>> sale.shipment_state
-    'waiting'
-    >>> sale.invoice_state
     'none'
-    >>> sale.reload()
+    >>> sale.invoice_state
+    'waiting'
     >>> len(sale.shipments), len(sale.shipment_returns), len(sale.invoices)
-    (1, 1, 0)
-
-Revoke sale and create pending moves::
-
-    >>> sale.click('revoke')
-    >>> sale.shipment_state == 'sent'
-    True
-    >>> shipment, = sale.shipments
-    >>> shipment.state == 'cancelled'
-    True
-    >>> shipment_returns, = sale.shipment_returns
-    >>> shipment_returns.state == 'cancelled'
-    True
-
-    >>> create_pending_moves = Wizard('sale.sale.create_pending_moves', [sale])
-    >>> sales = Sale.find([], order=[('id', 'ASC')])
-    >>> len(sales) == 2
-    True
-    >>> sale1, sale2 = sales
-    >>> (sale1.state, sale2.state) == ('done', 'draft')
-    True
-
-Sale and partial shipment::
-
-    >>> sale = Sale()
-    >>> sale.party = customer
-    >>> sale.payment_term = payment_term
-    >>> sale.invoice_method = 'shipment'
-    >>> sale_line = SaleLine()
-    >>> sale.lines.append(sale_line)
-    >>> sale_line.product = product
-    >>> sale_line.quantity = 10.0
-    >>> sale.click('quote')
-    >>> sale.click('confirm')
-    >>> sale.state
-    'processing'
+    (0, 0, 1)
+    >>> revoke_sales = Wizard('sale.sale.revoke', [sale])
+    >>> revoke_sales.form.manage_invoices = True 
+    >>> revoke_sales.execute('revoke')
     >>> sale.shipment_state
-    'waiting'
+    'none'
     >>> sale.invoice_state
     'none'
-    >>> sale.reload()
     >>> len(sale.shipments), len(sale.shipment_returns), len(sale.invoices)
-    (1, 0, 0)
+    (0, 0, 1)
+    
+Not yet linked to stock moves::
 
-Ship 3 products::
+    >>> invoice, = sale.invoices
+    >>> invoice_line, = invoice.lines
+    >>> len(invoice_line.stock_moves)
+    0
 
-    >>> shipment, = sale.shipments
-    >>> stock_inventory_move, = shipment.inventory_moves
-    >>> stock_inventory_move.quantity
-    10.0
-    >>> stock_inventory_move.quantity = 3.0
-    >>> shipment.click('assign_try')
-    >>> shipment.click('pick')
-    >>> shipment.click('pack')
-    >>> shipment.click('done')
-    >>> shipment.state
-    'done'
-
-    >>> sale.reload()
-    >>> shipments = sale.shipments
-    >>> len(shipments) == 2
-    True
-    >>> shipment1, shipment2 = sale.shipments
-    >>> (shipment1.state, shipment2.state) == ('done', 'waiting')
-    True
-    >>> shipment2.outgoing_moves[0].quantity == 7.0
-    True
-
-    >>> sale.click('revoke')
-    >>> sale.shipment_state == 'sent'
-    True
-    >>> shipment1, shipment2 = sale.shipments
-    >>> (shipment1.state, shipment2.state) == ('done', 'cancelled')
-    True
-    >>> create_pending_moves = Wizard('sale.sale.create_pending_moves', [sale])
-    >>> sales = Sale.find([], order=[('id', 'ASC')])
-    >>> new_sale = sales[-1]
-    >>> new_sale.lines[0].quantity == 7.0
-    True
-
-Sale and raise UserError::
+Sale and raise UserError when revoking::
 
     >>> sale = Sale()
     >>> sale.party = customer
@@ -253,7 +177,10 @@ Sale and raise UserError::
     >>> sale.click('confirm')
     >>> shipment, = sale.shipments
     >>> shipment.click('assign_try')
-    >>> sale.click('revoke')  # doctest: +IGNORE_EXCEPTION_DETAIL
+    True
+    >>> revoke_sales = Wizard('sale.sale.revoke', [sale])
+    >>> revoke_sales.form.manage_invoices = True 
+    >>> revoke_sales.execute('revoke') # doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
         ...
     trytond.exceptions.UserError:: ...
