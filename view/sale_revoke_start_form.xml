@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<!-- The COPYRIGHT file at the top level of this repository contains the full
+     copyright notices and license terms. -->
+<form>
+    <label string="Are you sure you want to revoke sales?" id="confirm_revoke_msg"/>
+    <newline/>
+    <label name="manage_invoices"/>
+    <field name="manage_invoices"/>
+</form>

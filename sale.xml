@@ -13,7 +13,6 @@ this repository contains the full copyright notices and license terms. -->
             <field name="name">revoke</field>
             <field name="string">Revoke</field>
             <field name="model" search="[('model', '=', 'sale.sale')]"/>
-            <field name="confirm">Are you sure you want to revoke sales?</field>
         </record>
         <record model="ir.model.button-res.group" id="sale_revoke_button_group_sale">
             <field name="button" ref="sale_revoke_button"/>
@@ -28,6 +27,18 @@ this repository contains the full copyright notices and license terms. -->
         <record model="ir.model.button-res.group" id="sale_create_pending_moves_button_group_sale">
             <field name="button" ref="sale_create_pending_moves_button"/>
             <field name="group" ref="sale.group_sale"/>
+        </record>
+
+        <!-- Revoke Wizard -->
+        <record model="ir.ui.view" id="sale_revoke_start_view_form">
+            <field name="model">sale.sale.revoke.start</field>
+            <field name="type">form</field>
+            <field name="name">sale_revoke_start_form</field>
+        </record>
+        <record model="ir.action.wizard" id="wizard_revoke">
+            <field name="name">Revoke Sale</field>
+            <field name="wiz_name">sale.sale.revoke</field>
+            <field name="model">sale.sale</field>
         </record>
 
         <record model="ir.action.wizard" id="act_sale_create_pending_moves_wizard">
