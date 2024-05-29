@@ -212,6 +212,7 @@ Ship 3 products::
     10.0
     >>> stock_inventory_move.quantity = 3.0
     >>> shipment.click('assign_try')
+    True
     >>> shipment.click('pick')
     >>> shipment.click('pack')
     >>> shipment.click('done')
