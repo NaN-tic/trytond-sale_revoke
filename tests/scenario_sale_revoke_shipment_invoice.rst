@@ -170,7 +170,6 @@ Not yet linked to invoice lines::
 Validate Shipments::
 
     >>> shipment.click('assign_try')
-    True
     >>> shipment.click('pick')
     >>> shipment.click('pack')
     >>> shipment.click('done')
@@ -178,7 +177,7 @@ Validate Shipments::
 Revoke sales with manage invoices::
 
     >>> sale.invoice_state
-    'waiting'
+    'pending'
     >>> len(sale.shipments), len(sale.shipment_returns), len(sale.invoices)
     (1, 0, 0)
     >>> revoke_sales = Wizard('sale.sale.revoke', [sale])
@@ -237,7 +236,6 @@ Sale and raise UserError when revoking::
     >>> sale.click('confirm')
     >>> shipment, = sale.shipments
     >>> shipment.click('assign_try')
-    True
     >>> revoke_sales = Wizard('sale.sale.revoke', [sale])
     >>> revoke_sales.execute('revoke') # doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):

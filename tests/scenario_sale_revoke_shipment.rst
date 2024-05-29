@@ -228,7 +228,7 @@ Ship 3 products::
     >>> shipment2.outgoing_moves[0].quantity == 7.0
     True
     >>> sale.invoice_state
-    'waiting'
+    'pending'
     >>> len(sale.shipments), len(sale.shipment_returns), len(sale.invoices)
     (2, 0, 1)
     >>> revoke_sales = Wizard('sale.sale.revoke', [sale])
@@ -236,7 +236,7 @@ Ship 3 products::
     >>> sale.shipment_state == 'sent'
     True
     >>> sale.invoice_state
-    'waiting'
+    'pending'
     >>> len(sale.shipments), len(sale.shipment_returns), len(sale.invoices)
     (2, 0, 1)
     >>> shipment1, shipment2 = sale.shipments
@@ -262,7 +262,6 @@ Sale and raise UserError when revoking::
     >>> sale.click('confirm')
     >>> shipment, = sale.shipments
     >>> shipment.click('assign_try')
-    True
     >>> revoke_sales = Wizard('sale.sale.revoke', [sale])
     >>> revoke_sales.execute('revoke') # doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):

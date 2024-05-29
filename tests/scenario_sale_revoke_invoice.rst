@@ -143,7 +143,7 @@ Sale 5 products with shipment method 'on invoice'::
     >>> sale.shipment_state
     'none'
     >>> sale.invoice_state
-    'waiting'
+    'pending'
     >>> len(sale.shipments), len(sale.shipment_returns), len(sale.invoices)
     (0, 0, 1)
     >>> revoke_sales = Wizard('sale.sale.revoke', [sale])
@@ -177,7 +177,6 @@ Sale and raise UserError when revoking::
     >>> sale.click('confirm')
     >>> shipment, = sale.shipments
     >>> shipment.click('assign_try')
-    True
     >>> revoke_sales = Wizard('sale.sale.revoke', [sale])
     >>> revoke_sales.form.manage_invoices = True 
     >>> revoke_sales.execute('revoke') # doctest: +IGNORE_EXCEPTION_DETAIL
