@@ -2,6 +2,10 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=utf-8\n"
 
+msgctxt "field:sale.configuration,sale_exception_margin:"
+msgid "Sale exception margin (days)"
+msgstr "Margen ventas en excepción (días)"
+
 msgctxt "field:sale.sale,ignored_moves:"
 msgid "Ignored Moves"
 msgstr "Movimientos ignorados"
@@ -23,8 +27,8 @@ msgid ""
 "You cannot revoke \"%(record)s\" because there are invoices that are not in "
 "Cancel, Draft, Posted or Paid state: \"%(names)s\"."
 msgstr ""
-"No se puede anular \"%(record)s\" porque hay facturas que no están en "
-"estado Cancelada, Borrador, Contabilizada o Pagada: \"%(names)s\"."
+"No se puede anular \"%(record)s\" porque hay facturas que no están en estado"
+" Cancelada, Borrador, Contabilizada o Pagada: \"%(names)s\"."
 
 msgctxt "model:ir.message,text:msg_can_not_revoke_moves"
 msgid ""
@@ -45,6 +49,10 @@ msgstr "Anular"
 msgctxt "model:sale.sale.revoke.start,name:"
 msgid "Revoke Start"
 msgstr "Inicio Anulación"
+
+msgctxt "selection:ir.cron,method:"
+msgid "Fix Exception Sales"
+msgstr "Arreglar ventas en excepción"
 
 msgctxt "view:sale.sale.revoke.start:"
 msgid "Are you sure you want to revoke sales?"

@@ -2,6 +2,10 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=utf-8\n"
 
+msgctxt "field:sale.configuration,sale_exception_margin:"
+msgid "Sale exception margin (days)"
+msgstr "Marge vendas en excepció (dies)"
+
 msgctxt "field:sale.sale,ignored_moves:"
 msgid "Ignored Moves"
 msgstr "Moviments ignorats"
@@ -23,8 +27,8 @@ msgid ""
 "You cannot revoke \"%(record)s\" because there are invoices that are not in "
 "Cancel, Draft, Posted or Paid state: \"%(names)s\"."
 msgstr ""
-"No podeu anul·lar \"%(record)s\" perquè hi ha factures que no estan en estat "
-"Cancel·lat, Esborrany, Comptabilitzats o Pagat: \"%(names)s\"."
+"No podeu anul·lar \"%(record)s\" perquè hi ha factures que no estan en estat"
+" Cancel·lat, Esborrany, Comptabilitzat o Pagat: \"%(names)s\"."
 
 msgctxt "model:ir.message,text:msg_can_not_revoke_moves"
 msgid ""
@@ -45,6 +49,10 @@ msgstr "Anul·lar"
 msgctxt "model:sale.sale.revoke.start,name:"
 msgid "Revoke Start"
 msgstr "Inici Anul·lació"
+
+msgctxt "selection:ir.cron,method:"
+msgid "Fix Exception Sales"
+msgstr "Arreglar vendes en excepció"
 
 msgctxt "view:sale.sale.revoke.start:"
 msgid "Are you sure you want to revoke sales?"
