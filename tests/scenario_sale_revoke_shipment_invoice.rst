@@ -172,7 +172,7 @@ Validate Shipments::
     >>> shipment.click('assign_try')
     >>> shipment.click('pick')
     >>> shipment.click('pack')
-    >>> shipment.click('done')
+    >>> shipment.click('do')
 
 Revoke sales with manage invoices::
 

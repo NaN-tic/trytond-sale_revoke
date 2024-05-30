@@ -165,7 +165,7 @@ Revoke sale and create pending moves::
 
     >>> revoke_sales = Wizard('sale.sale.revoke', [sale])
     >>> revoke_sales.execute('revoke')
-    >>> sale.shipment_state == 'sent'
+    >>> sale.shipment_state == 'none'
     True
     >>> shipment, = sale.shipments
     >>> shipment.state == 'cancelled'

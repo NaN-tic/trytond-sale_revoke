@@ -12,7 +12,7 @@ this repository contains the full copyright notices and license terms. -->
         <record model="ir.model.button" id="sale_revoke_button">
             <field name="name">revoke</field>
             <field name="string">Revoke</field>
-            <field name="model" search="[('model', '=', 'sale.sale')]"/>
+            <field name="model">sale.sale</field>
         </record>
         <record model="ir.model.button-res.group" id="sale_revoke_button_group_sale">
             <field name="button" ref="sale_revoke_button"/>
