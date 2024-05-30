@@ -29,6 +29,13 @@ this repository contains the full copyright notices and license terms. -->
             <field name="group" ref="sale.group_sale"/>
         </record>
 
+        <!-- sale.configuration -->
+        <record model="ir.ui.view" id="sale_configuration_view_form">
+            <field name="model">sale.configuration</field>
+            <field name="inherit" ref="sale.sale_configuration_view_form"/>
+            <field name="name">sale_configuration_form</field>
+        </record>
+
         <!-- Revoke Wizard -->
         <record model="ir.ui.view" id="sale_revoke_start_view_form">
             <field name="model">sale.sale.revoke.start</field>
@@ -45,6 +52,14 @@ this repository contains the full copyright notices and license terms. -->
             <field name="name">Create Pending Moves</field>
             <field name="wiz_name">sale.sale.create_pending_moves</field>
             <field name="model">sale.sale</field>
+        </record>
+
+        <!-- Fix Exception Sales Cron -->
+        <record model="ir.cron" id="sale_exception_fix_cron">
+            <field name="active" eval="False"/>
+            <field name="interval_number" eval="1"/>
+            <field name="interval_type">days</field>
+            <field name="method">sale.sale|sale_exception_fix_cron</field>
         </record>
     </data>
 </tryton>
