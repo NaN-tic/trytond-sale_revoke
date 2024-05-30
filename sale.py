@@ -1,5 +1,7 @@
 # This file is part of Tryton.  The COPYRIGHT file at the top level of
 # this repository contains the full copyright notices and license terms.
+import logging
+from datetime import timedelta
 from trytond.pool import Pool, PoolMeta
 from trytond.model import ModelView
 from trytond.model import fields
@@ -9,6 +11,23 @@ from trytond.i18n import gettext
 from trytond.pyson import Bool, Eval
 from trytond.wizard import (
     Button, StateAction, StateTransition, StateView, Wizard)
+
+logger = logging.getLogger(__name__)
+
+class Cron(metaclass=PoolMeta):
+    __name__ = 'ir.cron'
+
+    @classmethod
+    def __setup__(cls):
+        super().__setup__()
+        cls.method.selection += [
+            ('sale.sale|sale_exception_fix_cron', "Fix Exception Sales"),
+        ]
+
+class Configuration(metaclass=PoolMeta):
+    __name__ = 'sale.configuration'
+
+    sale_exception_margin = fields.Integer('Sale exception margin (days)')
 
 class Sale(metaclass=PoolMeta):
     __name__ = 'sale.sale'
@@ -87,6 +106,54 @@ class Sale(metaclass=PoolMeta):
                     names += '...'
                 raise UserError(gettext('sale_revoke.msg_can_not_revoke_invoices',
                 record=sale.rec_name, names=names))
+
+    @classmethod
+    def sale_exception_fix_cron(cls):
+        pool = Pool()
+        Sale = pool.get('sale.sale')
+        Configuration = pool.get('sale.configuration')
+        Date = pool.get('ir.date')
+
+        configuration = Configuration.get_singleton()
+        margin_days = getattr(configuration, 'sale_exception_margin') or 10
+        company = Transaction().context.get('company')
+
+        sales = Sale.search([('company', '=', company),
+            ('state', '=', 'processing'),
+            ('sale_date', '<=', Date.today()
+                - timedelta(days=margin_days)),
+            ['OR', ('invoice_state', '=', 'exception'),
+                ('shipment_state', '=', 'exception')]],
+                order=[('sale_date', 'ASC')])
+
+        for sale in sales:
+            cls.__queue__.handle_sale_exception(sale)
+
+    @classmethod
+    def handle_sale_exception(cls, sale):
+
+        sale = cls(sale.id)
+
+        try:
+            sale.process([sale])
+        except Exception as e:
+            logger.warning("Skipped process: "+str(sale.id)+", Error: "+str(e))
+            return
+
+        sale.validate_moves([sale])
+        sale.validate_invoices([sale])
+
+        try:
+            sale.handle_shipments([sale])
+        except Exception as e:
+            logger.warning("Skipped shipment: "+str(sale.id)+", Error: "+str(e))
+            return
+
+        try:
+            sale.handle_invoices([sale])
+        except Exception as e:
+            logger.warning("Skipped invoice: "+str(sale.id)+", Error: "+str(e))
+            return
 
     @classmethod
     def handle_shipments(cls, sales):
