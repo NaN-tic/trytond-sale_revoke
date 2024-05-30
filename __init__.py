@@ -6,7 +6,9 @@ from . import sale
 
 def register():
     Pool.register(
+        sale.Cron,
         sale.Sale,
+        sale.Configuration,
         sale.SaleRevokeStart,
         module='sale_revoke', type_='model')
     Pool.register(
