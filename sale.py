@@ -294,7 +294,7 @@ class SaleCreatePendingMoves(Wizard):
                 product_id = data.get('product')
                 unit_id = data.get('unit')
                 if product_id:
-                    return sale_units[product_id]
+                    return sale_units.get(product_id)
                 return unit_id
 
             Line.copy(sale.lines, default={
