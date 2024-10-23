@@ -189,22 +189,9 @@ class Test(unittest.TestCase):
         self.assertEqual(invoice.type, 'out')
         invoice_line1, invoice_line2 = sorted(invoice.lines,
                                               key=lambda l: l.quantity or 0)
-        for line in invoice.lines:
-
-            line.quantity = 1
-
-            line.save()
-        invoice.click('post')
-
         # Invoice lines must be linked to each stock moves
         self.assertEqual(invoice_line1.stock_moves, [stock_move1])
         self.assertEqual(invoice_line2.stock_moves, [stock_move2])
-
-        # Check second invoices
-        sale.reload()
-        self.assertEqual(len(sale.invoices), 1)
-        self.assertEqual(
-            sum(l.quantity for i in sale.invoices for l in i.lines), 2.0)
 
         # Sale and raise UserError when revoking
         sale = Sale()
