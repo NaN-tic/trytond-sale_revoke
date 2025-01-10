@@ -184,6 +184,7 @@ class Sale(metaclass=PoolMeta):
                 session_id, _, _ = HandleShipmentException.create()
                 handle_shipment_exception = HandleShipmentException(session_id)
                 handle_shipment_exception.ask.recreate_moves = []
+                handle_shipment_exception.ask.ignore_moves = pending_moves
                 handle_shipment_exception.ask.domain_moves = pending_moves
                 handle_shipment_exception.transition_handle()
                 HandleShipmentException.delete(session_id)
@@ -210,6 +211,7 @@ class Sale(metaclass=PoolMeta):
                 session_id, _, _ = HandleInvoiceException.create()
                 handle_invoice_exception = HandleInvoiceException(session_id)
                 handle_invoice_exception.ask.recreate_invoices = []
+                handle_invoice_exception.ask.ignore_invoices = pending_invoices
                 handle_invoice_exception.ask.domain_invoices = pending_invoices
                 handle_invoice_exception.transition_handle()
                 HandleInvoiceException.delete(session_id)
