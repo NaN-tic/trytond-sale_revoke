@@ -14,6 +14,7 @@ from trytond.wizard import (
 
 logger = logging.getLogger(__name__)
 
+
 class Cron(metaclass=PoolMeta):
     __name__ = 'ir.cron'
 
@@ -24,10 +25,12 @@ class Cron(metaclass=PoolMeta):
             ('sale.sale|sale_exception_fix_cron', "Fix Exception Sales"),
         ]
 
+
 class Configuration(metaclass=PoolMeta):
     __name__ = 'sale.configuration'
 
     sale_exception_margin = fields.Integer('Sale exception margin (days)')
+
 
 class Sale(metaclass=PoolMeta):
     __name__ = 'sale.sale'
@@ -219,11 +222,13 @@ class Sale(metaclass=PoolMeta):
     def create_pending_moves(cls, sales):
         pass
 
+
 class SaleRevokeStart(ModelView):
     'Revoke Start'
     __name__ = 'sale.sale.revoke.start'
 
     manage_invoices = fields.Boolean('Also Manage Invoices?')
+
 
 class SaleRevoke(Wizard):
     'Revoke Sales'
@@ -247,6 +252,7 @@ class SaleRevoke(Wizard):
         Sale.handle_shipments(self.records)
 
         return 'end'
+
 
 class SaleCreatePendingMoves(Wizard):
     "Sale Create Pending Moves"
