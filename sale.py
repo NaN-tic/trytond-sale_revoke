@@ -35,7 +35,7 @@ class Configuration(metaclass=PoolMeta):
 class Sale(metaclass=PoolMeta):
     __name__ = 'sale.sale'
 
-    ignored_moves = fields.Function(fields.One2Many('stock.move', None,
+    ignored_moves = fields.Function(fields.Many2Many('stock.move', None,
         'Ignored Moves'), 'get_ignored_moves')
 
     @classmethod
