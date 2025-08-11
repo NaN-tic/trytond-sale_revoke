@@ -49,6 +49,7 @@ class Sale(metaclass=PoolMeta):
                     'invisible': ~Eval('state').in_(
                         ['confirmed', 'processing']),
                     'depends': ['state'],
+                    'icon': 'tryton-cancel'
                     },
                 'create_pending_moves': {
                     'invisible': (~Eval('state').in_(['processing', 'done'])
