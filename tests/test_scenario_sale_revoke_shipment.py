@@ -116,13 +116,13 @@ class Test(unittest.TestCase):
         inventory.click('confirm')
         self.assertEqual(inventory.state, 'done')
 
-        # Sale 5 products with an invoice method 'on shipment'
+        # Sale 5 products with an invoice method 'on fulfillment'
         Sale = Model.get('sale.sale')
         SaleLine = Model.get('sale.line')
         sale = Sale()
         sale.party = customer
         sale.payment_term = payment_term
-        sale.invoice_method = 'shipment'
+        sale.invoice_method = 'fulfillment'
         sale_line = SaleLine()
         sale.lines.append(sale_line)
         sale_line.product = product
@@ -172,7 +172,7 @@ class Test(unittest.TestCase):
         sale = Sale()
         sale.party = customer
         sale.payment_term = payment_term
-        sale.invoice_method = 'shipment'
+        sale.invoice_method = 'fulfillment'
         sale_line = SaleLine()
         sale.lines.append(sale_line)
         sale_line.product = product
@@ -234,7 +234,7 @@ class Test(unittest.TestCase):
         sale = Sale()
         sale.party = customer
         sale.payment_term = payment_term
-        sale.invoice_method = 'shipment'
+        sale.invoice_method = 'fulfillment'
         sale_line = SaleLine()
         sale.lines.append(sale_line)
         sale_line.product = product
