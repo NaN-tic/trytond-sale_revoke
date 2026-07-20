@@ -5,7 +5,7 @@ from datetime import timedelta
 from trytond.pool import Pool, PoolMeta
 from trytond.model import ModelView
 from trytond.model import fields
-from trytond.transaction import Transaction
+from trytond.transaction import Transaction, TransactionError
 from trytond.exceptions import UserError
 from trytond.i18n import gettext
 from trytond.pyson import Bool, Eval
@@ -135,11 +135,12 @@ class Sale(metaclass=PoolMeta):
 
     @classmethod
     def handle_sale_exception(cls, sale):
-
         sale = cls(sale.id)
 
         try:
             sale.process([sale])
+        except TransactionError:
+            raise
         except Exception as e:
             logger.warning("Skipped process: "+str(sale.id)+", Error: "+str(e))
             return
@@ -149,12 +150,16 @@ class Sale(metaclass=PoolMeta):
 
         try:
             sale.handle_shipments([sale])
+        except TransactionError:
+            raise
         except Exception as e:
             logger.warning("Skipped shipment: "+str(sale.id)+", Error: "+str(e))
             return
 
         try:
             sale.handle_invoices([sale])
+        except TransactionError:
+            raise
         except Exception as e:
             logger.warning("Skipped invoice: "+str(sale.id)+", Error: "+str(e))
             return
