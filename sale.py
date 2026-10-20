@@ -24,6 +24,7 @@ class Cron(metaclass=PoolMeta):
         cls.method.selection += [
             ('sale.sale|sale_exception_fix_cron', "Fix Exception Sales"),
         ]
+        cls.methods_company_needed.add('sale.sale|sale_exception_fix_cron')
 
 
 class Configuration(metaclass=PoolMeta):
