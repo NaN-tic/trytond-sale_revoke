@@ -1,0 +1,74 @@
+#
+msgid ""
+msgstr ""
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgctxt "field:sale.configuration,sale_exception_margin:"
+msgid "Sale exception margin (days)"
+msgstr "销售异常宽限期（天）"
+
+msgctxt "field:sale.sale,ignored_moves:"
+msgid "Ignored Moves"
+msgstr "已忽略移动"
+
+msgctxt "field:sale.sale.revoke.start,manage_invoices:"
+msgid "Also Manage Invoices?"
+msgstr "同时处理发票？"
+
+msgctxt "model:ir.action,name:act_sale_create_pending_moves_wizard"
+msgid "Create Pending Moves"
+msgstr "创建待处理移动"
+
+msgctxt "model:ir.action,name:wizard_revoke"
+msgid "Revoke Sale"
+msgstr "撤销销售"
+
+#, python-format
+msgctxt "model:ir.message,text:msg_can_not_revoke_invoices"
+msgid ""
+"You cannot revoke \"%(record)s\" because there are invoices that are not in "
+"Cancel, Draft, Posted or Paid state: \"%(names)s\"."
+msgstr "无法撤销“%(record)s”，因为存在状态不为“已取消”“草稿”“已过账”或“已付款”的发票：“%(names)s”。"
+
+#, python-format
+msgctxt "model:ir.message,text:msg_can_not_revoke_moves"
+msgid ""
+"You cannot revoke \"%(record)s\" because there are moves that are not in "
+"Cancel, Draft or Done state: \"%(names)s\"."
+msgstr "无法撤销“%(record)s”，因为存在状态不为“已取消”“草稿”或“已完成”的移动：“%(names)s”。"
+
+msgctxt "model:ir.model.button,string:sale_create_pending_moves_button"
+msgid "Create Pending Moves"
+msgstr "创建待处理移动"
+
+msgctxt "model:ir.model.button,string:sale_revoke_button"
+msgid "Revoke"
+msgstr "撤销"
+
+msgctxt "model:sale.sale.revoke.start,name:"
+msgid "Revoke Start"
+msgstr "撤销：开始"
+
+msgctxt "selection:ir.cron,method:"
+msgid "Fix Exception Sales"
+msgstr "修复异常销售单"
+
+msgctxt "view:sale.sale.revoke.start:"
+msgid "Are you sure you want to revoke sales?"
+msgstr "确定要撤销销售单吗？"
+
+msgctxt "wizard_button:sale.sale.revoke,start,end:"
+msgid "Cancel"
+msgstr "取消"
+
+msgctxt "wizard_button:sale.sale.revoke,start,revoke:"
+msgid "Revoke"
+msgstr "撤销"
+
+msgctxt "model:ir.model.button,confirm:sale_revoke_button"
+msgid "Are you sure you want to revoke sales?"
+msgstr "确定要撤销销售单吗？"
