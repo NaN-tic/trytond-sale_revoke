@@ -1,0 +1,78 @@
+#
+msgid ""
+msgstr ""
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgctxt "field:sale.configuration,sale_exception_margin:"
+msgid "Sale exception margin (days)"
+msgstr "Értékesítési kivétel türelmi ideje (nap)"
+
+msgctxt "field:sale.sale,ignored_moves:"
+msgid "Ignored Moves"
+msgstr "Figyelmen kívül hagyott készletmozgások"
+
+msgctxt "field:sale.sale.revoke.start,manage_invoices:"
+msgid "Also Manage Invoices?"
+msgstr "Számlák kezelése is?"
+
+msgctxt "model:ir.action,name:act_sale_create_pending_moves_wizard"
+msgid "Create Pending Moves"
+msgstr "Függőben lévő készletmozgások létrehozása"
+
+msgctxt "model:ir.action,name:wizard_revoke"
+msgid "Revoke Sale"
+msgstr "Értékesítés visszavonása"
+
+#, python-format
+msgctxt "model:ir.message,text:msg_can_not_revoke_invoices"
+msgid ""
+"You cannot revoke \"%(record)s\" because there are invoices that are not in "
+"Cancel, Draft, Posted or Paid state: \"%(names)s\"."
+msgstr ""
+"A(z) „%(record)s” nem vonható vissza, mert vannak nem Törölt, Piszkozat, "
+"Könyvelt vagy Kifizetett állapotú számlák: „%(names)s”."
+
+#, python-format
+msgctxt "model:ir.message,text:msg_can_not_revoke_moves"
+msgid ""
+"You cannot revoke \"%(record)s\" because there are moves that are not in "
+"Cancel, Draft or Done state: \"%(names)s\"."
+msgstr ""
+"A(z) „%(record)s” nem vonható vissza, mert vannak nem Törölt, Piszkozat vagy"
+" Kész állapotú készletmozgások: „%(names)s”."
+
+msgctxt "model:ir.model.button,string:sale_create_pending_moves_button"
+msgid "Create Pending Moves"
+msgstr "Függőben lévő készletmozgások létrehozása"
+
+msgctxt "model:ir.model.button,string:sale_revoke_button"
+msgid "Revoke"
+msgstr "Visszavonás"
+
+msgctxt "model:sale.sale.revoke.start,name:"
+msgid "Revoke Start"
+msgstr "Visszavonás – Kezdés"
+
+msgctxt "selection:ir.cron,method:"
+msgid "Fix Exception Sales"
+msgstr "Hibás értékesítések javítása"
+
+msgctxt "view:sale.sale.revoke.start:"
+msgid "Are you sure you want to revoke sales?"
+msgstr "Biztosan visszavonja az értékesítéseket?"
+
+msgctxt "wizard_button:sale.sale.revoke,start,end:"
+msgid "Cancel"
+msgstr "Mégse"
+
+msgctxt "wizard_button:sale.sale.revoke,start,revoke:"
+msgid "Revoke"
+msgstr "Visszavonás"
+
+msgctxt "model:ir.model.button,confirm:sale_revoke_button"
+msgid "Are you sure you want to revoke sales?"
+msgstr "Biztosan visszavonja az értékesítéseket?"
